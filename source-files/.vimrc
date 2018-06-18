@@ -278,7 +278,7 @@ function! ChangeTheme()
   " let status .= '\33[2K\r'
 
   "let status.='%#' . color . 'ModeBlockNC#'
-  let status .= '%{AddEndline()}'
+  " let status .= '%{AddEndline()}'
 
   return status
 endfunction
