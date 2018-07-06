@@ -41,6 +41,7 @@ augroup ConfigureTabs
   autocmd!
   autocmd Filetype sh setlocal tabstop=2 shiftwidth=2
   autocmd Filetype vim setlocal tabstop=2 shiftwidth=2
+  autocmd Filetype yaml setlocal tabstop=2 shiftwidth=2
 augroup END
 
 
@@ -48,7 +49,7 @@ augroup END
 
 setlocal incsearch          " enable incremental search
 setlocal hlsearch           " highlight search matches
-setlocal ignorecase         " dont match case on search ...
+" setlocal ignorecase         " dont match case on search ...
 setlocal smartcase          " until you use caps
 
 
