@@ -57,3 +57,9 @@ function bstat()
 {
   svn status $@ | grep -Ev "^Perform|^X|^$"
 }
+
+function gdiff()
+{
+  git diff $@ > changes.patch && vim changes.patch && rm -f changes.patch
+}
+
