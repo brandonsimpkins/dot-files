@@ -315,11 +315,18 @@ augroup END
 
 
 " TODO: cleanup since this was copied off the internet
+" TODO: 27 Jul 2018 - no idea what this auto command does. What the hell was I
+" thinking when I comitted this?
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
         \| exe "normal! g'\"" | endif
 endif
 
+
+" add additional file types for unusual extensions
+augroup filetypedetect
+    au BufRead,BufNewFile *.template set filetype=yaml
+augroup END
 
 
 augroup TrackActiveWindow
