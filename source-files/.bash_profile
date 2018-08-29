@@ -37,6 +37,8 @@ elif [ "$(uname)" == "Darwin" ]; then
 else
   echo "Warning: failed to set 'll' alias for '$(uname)' OS."
 fi
+alias dim='echo Terminal Dimensions: $(tput cols) columns x $(tput lines) rows'
+
 
 # Set SVN related settings
 alias propset='svn propset svn:externals -F svn.externals .'
@@ -60,6 +62,9 @@ function bstat()
 
 function gdiff()
 {
-  git diff $@ > changes.patch && vim changes.patch && rm -f changes.patch
+  git diff $@ > changes.$$.patch && vim changes.$$.patch && rm -f changes.$$.patch
 }
 
+
+# Frickin Amazon Linux....
+# unset PYTHON_INSTALL_LAYOUT
