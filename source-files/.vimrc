@@ -4,6 +4,10 @@
 
 setlocal nocompatible               " vim > vi, don't use vi settings
 setlocal number                     " show line numbers
+
+" currently this slows down cvims performance
+" " https://github.com/vim/vim/issues/2584
+
 setlocal cursorline                 " underline the current line
 setlocal viminfo='20,\"50,<2000     " increase session info storage
 setlocal wildmode=list:full         " enable completion matching for commands
@@ -197,28 +201,6 @@ function! RightItem(item)
   return ''
 endfunction
 
-
-
-"let localbranchname = VersionControlStatus()
-
-function! IsActiveWindow()
-  if winnr() == g:active_window
-    return 'This is the active window | '
-  endif
-
-  return ''
-endfunction
-
-function! ActiveFileType()
-  if &filetype != ''
-    return '[' . &filetype . ']'
-  endif
-  return ''
-endfunction
-
-
-
-
 " freaky black magic i still don't quite understand that reduces the delay
 " after hitting the <esc> key in insert / replace mode from 1000 milliseconds
 " to 10 milliseconds
@@ -236,18 +218,9 @@ function! ChangeTheme()
   let status='%#' . color . 'ModeBlock#'
   let status .= ' '. name . ' '
 
-  " more freaky black magic voodoo - call the function in the %{}
-  " context to have the function evaluate in teh actual window's
-  " context, not the current window context provided by %!
   let status.="%{LeftItem(VersionControlStatus())}"
 
-
-
-
   let status .='〉%f '
-
-  " let status.='%#' . color . 'ModeBlockNC#' . '〉'
-
 
   let status.="%h"      "help file flag
   let status.="%m"      "modified flag
@@ -255,49 +228,16 @@ function! ChangeTheme()
 
 
   let status.="\ %="                        " align left
-  let g:active_window=winnr()
-  " let status.="%{IsActiveWindow()}"
-
-
-  "let status .= 'bufnr() [' . bufnr('%') . '] actual [' . g:actual_curbuf ']  '
-  " let status .= 'bufnr() [%{bufnr("%")}] actual [%{g:actual_curbuf}]  '
 
   let status.="Enc[%{strlen(&fenc)?&fenc:'none'}]" .  '〈'
 
   let status.="%{RightItem('FF['. &ff . ']')}"              "file format
 
-  "let status.=' active window [' . g:active_window . ']   | '
-
-  " let status .= '〈'
-  " let status.='%#' . color . 'ModeBlock#'
-
   let status.=' Buf[%n/%{bufnr("$")}] Win[%{winnr()}]'
   let status.= '〈 [%p%%] '            " line X of Y [percent of file]
 
-  "  let status.="\ Win:%{winnr()}"                    " Buffer number
-
-  " let status .= '\33[2K\r'
-
-  "let status.='%#' . color . 'ModeBlockNC#'
-  " let status .= '%{AddEndline()}'
-
   return status
 endfunction
-
-highlight User1      ctermfg=0   ctermbg=1
-
-
-function! AddEndline()
-  echom 'called AddEndline()'
-  if exists("g:actual_curbuf")
-    echom 'var g_actual_curbuf exists'
-    if g:actual_curbuf != bufnr('%')
-      return '%1* < ------------------------------ not current window ----------------------------'
-    endif
-  endif
-  return ""
-endfunction
-
 
 set statusline=%!ChangeTheme()               " Changing the statusline color
 
@@ -312,16 +252,6 @@ augroup StripWhitespace
   autocmd!
   autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 augroup END
-
-
-" TODO: cleanup since this was copied off the internet
-" TODO: 27 Jul 2018 - no idea what this auto command does. What the hell was I
-" thinking when I comitted this?
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-        \| exe "normal! g'\"" | endif
-endif
-
 
 " add additional file types for unusual extensions
 augroup filetypedetect
